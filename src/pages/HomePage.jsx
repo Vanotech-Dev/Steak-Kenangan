@@ -22,7 +22,7 @@ export default function HomePage() {
         </div>
         <div className="relative z-10 max-w-7xl mx-auto px-8 w-full">
           <div className="max-w-2xl">
-            <h1 className="text-6xl md:text-9xl font-headline font-black text-on-surface leading-[0.9] tracking-tighter mb-6">
+            <h1 className="text-5xl md:text-9xl font-headline font-black text-on-surface leading-[0.9] tracking-tighter mb-6">
               STEAK <span className="text-primary italic block">KENANGAN</span>
             </h1>
             <p className="text-xl md:text-2xl font-headline italic text-on-surface-variant mb-12 border-l-4 border-primary pl-6">
