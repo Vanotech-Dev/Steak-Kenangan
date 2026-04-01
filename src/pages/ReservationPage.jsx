@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { useBooking } from '../context/BookingContext';
 import FadeIn from '../components/ui/FadeIn';
+import { supabase } from '../lib/supabase';
 
 export default function ReservationPage() {
-  const { bookingItems, totalPrice, totalItems, updateQuantity, removeItem } = useBooking();
+  const { bookingItems, totalPrice, totalItems, updateQuantity, removeItem, clearBooking } = useBooking();
   const [guests, setGuests] = useState(2);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -18,7 +20,7 @@ export default function ReservationPage() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSendWhatsApp = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
     if (!formData.name || !formData.phone || !formData.date || !formData.time) {
@@ -26,23 +28,76 @@ export default function ReservationPage() {
       return;
     }
 
-    const foodList = bookingItems
-      .map(item => `- ${item.name} (x${item.quantity})`)
-      .join('%0A');
+    setLoading(true);
 
-    const message = `Halo Steak Kenangan! Saya ingin melakukan reservasi:%0A%0A` +
-      `*Detail Reservasi:*%0A` +
-      `- Nama: ${formData.name}%0A` +
-      `- WhatsApp: 0${formData.phone}%0A` +
-      `- Tanggal: ${formData.date}%0A` +
-      `- Waktu: ${formData.time}%0A` +
-      `- Jumlah Tamu: ${guests} Orang%0A` +
-      `${formData.notes ? `- Catatan: ${formData.notes}%0A` : ''}%0A` +
-      `*Daftar Pesanan:*%0A${foodList || '- Belum memilih menu'}%0A%0A` +
-      `*Total Estimasi: Rp ${totalPrice.toLocaleString('id-ID')}*%0A%0A` +
-      `Terima kasih!`;
+    try {
+      // 1. Simpan ke tabel 'reservations'
+      const { data: reservation, error: resError } = await supabase
+        .from('reservations')
+        .insert([{
+          name: formData.name,
+          phone: `0${formData.phone}`,
+          reservation_date: formData.date,
+          reservation_time: formData.time,
+          guests: guests,
+          notes: formData.notes,
+          total_amount: totalPrice
+        }])
+        .select()
+        .single();
 
-    window.open(`https://wa.me/6285180536854?text=${message}`, '_blank');
+      if (resError) throw resError;
+
+      // 2. Simpan daftar makanan ke 'reservation_items' (jika ada)
+      if (bookingItems.length > 0) {
+        const itemsToInsert = bookingItems.map(item => ({
+          reservation_id: reservation.id,
+          item_name: item.name,
+          quantity: item.quantity,
+          price: item.price,
+          subtotal: item.price * item.quantity
+        }));
+
+        const { error: itemsError } = await supabase
+          .from('reservation_items')
+          .insert(itemsToInsert);
+
+        if (itemsError) throw itemsError;
+      }
+
+      // 3. Bersihkan Keranjang
+      clearBooking();
+
+      // 4. Buka WhatsApp untuk konfirmasi
+      const foodList = bookingItems
+        .map(item => `- ${item.name} (x${item.quantity})`)
+        .join('%0A');
+
+      const message = `Halo Steak Kenangan! Saya ingin melakukan reservasi:%0A%0A` +
+        `*ID Order:* ${reservation.id.slice(0, 8)}%0A` +
+        `*Detail Reservasi:*%0A` +
+        `- Nama: ${formData.name}%0A` +
+        `- WhatsApp: 0${formData.phone}%0A` +
+        `- Tanggal: ${formData.date}%0A` +
+        `- Waktu: ${formData.time}%0A` +
+        `- Jumlah Tamu: ${guests} Orang%0A` +
+        `${formData.notes ? `- Catatan: ${formData.notes}%0A` : ''}%0A` +
+        `*Daftar Pesanan:*%0A${foodList || '- Belum memilih menu'}%0A%0A` +
+        `*Total Estimasi: Rp ${totalPrice.toLocaleString('id-ID')}*%0A%0A` +
+        `Terima kasih!`;
+
+      window.open(`https://wa.me/6285180536854?text=${message}`, '_blank');
+      
+      // Reset Form sederhana
+      setFormData({ name: '', phone: '', date: '', time: '', notes: '' });
+      setGuests(2);
+      
+    } catch (error) {
+      console.error('Error saving reservation:', error);
+      alert('Maaf, terjadi kesalahan saat menyimpan reservasi. Silakan coba lagi.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
