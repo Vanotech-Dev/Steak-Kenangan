@@ -94,7 +94,9 @@ export default function ReservationPage() {
       
     } catch (error) {
       console.error('Error saving reservation:', error);
-      alert('Maaf, terjadi kesalahan saat menyimpan reservasi. Silakan coba lagi.');
+      // Menampilkan pesan error yang lebih spesifik untuk debugging
+      const errorMsg = error.message || error.details || 'Kesalahan tidak diketahui';
+      alert(`Gagal menyimpan ke database: ${errorMsg}. Pastikan Tabel SQL sudah dibuat dan RLS Policy sudah diatur.`);
     } finally {
       setLoading(false);
     }
@@ -184,7 +186,7 @@ export default function ReservationPage() {
         <div className="lg:col-span-7 bg-surface-container-low rounded-xl p-8 md:p-12 shadow-2xl relative overflow-hidden">
           <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 blur-[100px] -mr-32 -mt-32"></div>
           
-          <form className="space-y-8 relative z-10" onSubmit={handleSendWhatsApp}>
+          <form className="space-y-8 relative z-10" onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="space-y-2">
                 <label className="block text-xs font-label font-bold uppercase tracking-widest text-on-surface-variant ml-1">Nama Lengkap</label>
@@ -246,9 +248,14 @@ export default function ReservationPage() {
             </div>
             
             <div className="pt-4">
-              <button className="fire-gradient w-full py-5 rounded-md text-on-primary-fixed font-black text-lg tracking-widest uppercase flex items-center justify-center gap-3 hover:scale-[1.02] active:scale-95 transition-all shadow-lg shadow-primary/20 cursor-pointer" type="submit">
-                Kirim via WhatsApp
-                <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>local_fire_department</span>
+              <button 
+                disabled={loading}
+                className={`fire-gradient w-full py-5 rounded-md text-on-primary-fixed font-black text-lg tracking-widest uppercase flex items-center justify-center gap-3 hover:scale-[1.02] active:scale-95 transition-all shadow-lg shadow-primary/20 ${loading ? 'opacity-70 cursor-not-allowed scale-100' : 'cursor-pointer'}`} 
+                type="submit"
+              >
+                {loading ? 'Mengirim...' : 'Kirim via WhatsApp'}
+                {!loading && <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>local_fire_department</span>}
+                {loading && <div className="w-5 h-5 border-2 border-on-primary-fixed border-t-transparent rounded-full animate-spin"></div>}
               </button>
             </div>
           </form>
