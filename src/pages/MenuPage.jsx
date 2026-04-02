@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { menuCategories, menuData } from '../data/menuData';
 import MenuCard from '../components/ui/MenuCard';
@@ -8,9 +8,23 @@ import { useBooking } from '../context/BookingContext';
 export default function MenuPage() {
   const [activeCategory, setActiveCategory] = useState('semua');
   const { totalItems, totalPrice, clearBooking } = useBooking();
+  const menuTitleRef = useRef(null);
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'instant' });
+    // Scroll to the menu title when the category changes, 
+    // but only if it's not the initial mount or 'semua'
+    if (activeCategory !== 'semua' && menuTitleRef.current) {
+      const headerOffset = 100;
+      const elementPosition = menuTitleRef.current.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+      });
+    } else if (activeCategory === 'semua') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   }, [activeCategory]);
 
   return (
@@ -20,7 +34,7 @@ export default function MenuPage() {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
           <div className="max-w-2xl">
             <span className="label-md uppercase tracking-[0.2em] text-primary mb-4 block">Eksplorasi Rasa</span>
-            <h1 className="text-6xl md:text-8xl font-headline font-black tracking-tighter leading-none italic">
+            <h1 ref={menuTitleRef} className="text-6xl md:text-8xl font-headline font-black tracking-tighter leading-none italic">
               MENU KAMI
             </h1>
           </div>
