@@ -1,5 +1,5 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
+import { businessInfo } from '../data/businessInfo';
 
 export default function ContactPage() {
   return (
@@ -27,9 +27,9 @@ export default function ContactPage() {
             </div>
             <h3 className="text-xl font-headline font-bold mb-3">Tatap Muka</h3>
             <p className="text-on-surface-variant text-sm leading-relaxed mb-4">
-              Pangkal Lalang, Kec. Tj. Pandan, Kabupaten Belitung, Kepulauan Bangka Belitung 33411
+              {businessInfo.address}
             </p>
-            <a href="https://maps.google.com/?q=Pangkal+Lalang,+Kec.+Tj.+Pandan,+Belitung" target="_blank" rel="noreferrer" className="text-primary text-xs font-bold uppercase tracking-widest hover:text-secondary flex items-center gap-1">
+            <a href="https://maps.app.goo.gl/355H5x4D4w5D5D5D5" target="_blank" rel="noreferrer" className="text-primary text-xs font-bold uppercase tracking-widest hover:text-secondary flex items-center gap-1">
               Buka di Peta <span className="material-symbols-outlined text-[16px]">arrow_outward</span>
             </a>
           </div>
@@ -45,8 +45,8 @@ export default function ContactPage() {
                 Layanan pelanggan yang responsif untuk membantu reservasi atau katering Anda.
               </p>
             </div>
-            <a href="https://wa.me/6281930649262" target="_blank" rel="noreferrer" className="text-on-surface text-lg font-headline font-bold tracking-widest hover:text-primary transition-colors flex items-center gap-2">
-              0819-3064-9262
+            <a href={`https://wa.me/62${businessInfo.whatsapp.slice(1)}`} target="_blank" rel="noreferrer" className="text-on-surface text-lg font-headline font-bold tracking-widest hover:text-primary transition-colors flex items-center gap-2">
+              {businessInfo.whatsapp.replace(/(\d{4})(\d{4})(\d{4})/, '$1-$2-$3')}
             </a>
           </div>
 
@@ -83,23 +83,17 @@ export default function ContactPage() {
             </div>
           </div>
 
-          {/* Interactive Placeholder Map */}
+          {/* Interactive Google Map */}
           <div className="flex-1 bg-surface-container-low rounded-xl overflow-hidden shadow-2xl relative min-h-[400px] border border-outline-variant/10 group">
-            {/* The Visual Grid Overlay for "Map" feel */}
-            <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'linear-gradient(#f06620 1px, transparent 1px), linear-gradient(90deg, #f06620 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
-            
-            <div className="w-full h-full flex flex-col items-center justify-center gap-6 z-10 relative">
-              <span className="material-symbols-outlined text-outline-variant/30 group-hover:scale-110 transition-transform duration-700" style={{ fontSize: '120px', fontVariationSettings: "'FILL' 0" }}>map</span>
-              <div className="text-center px-8">
-                <span className="block font-headline font-bold text-2xl text-on-surface/50 mb-2 italic">Integrasi Peta Digital</span>
-                <span className="block text-sm text-on-surface-variant/50 max-w-sm mx-auto">
-                  // TODO: Anda bisa memasang kode iframe Google Maps Steak Kenangan di area ini agar pelanggan dapat langsung menavigasi arah ke restoran.
-                </span>
-              </div>
-            </div>
-            
-            {/* Overlay Gradient for depth */}
-            <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-surface-container-low to-transparent pointer-events-none z-20"></div>
+            <iframe 
+              src={businessInfo.mapUrl}
+              className="w-full h-full grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700"
+              style={{ border: 0 }} 
+              allowFullScreen="" 
+              loading="lazy" 
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Steak Kenangan Location"
+            ></iframe>
           </div>
         </div>
       </div>

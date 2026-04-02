@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { businessInfo } from '../data/businessInfo';
 
 export default function Footer() {
   return (
@@ -20,14 +21,14 @@ export default function Footer() {
         <div>
           <h4 className="text-[#f06620] font-bold text-xs uppercase tracking-widest mb-6">Ikuti Kami</h4>
           <ul className="space-y-4">
-            <li><a className="text-[#e5e2e1]/60 text-sm hover:text-[#ffb955] transition-colors" href="https://instagram.com/steakkenangan" target="_blank" rel="noreferrer">Instagram</a></li>
-            <li><a className="text-[#e5e2e1]/60 text-sm hover:text-[#ffb955] transition-colors" href="https://wa.me/6281930649262" target="_blank" rel="noreferrer">WhatsApp</a></li>
+            <li><a className="text-[#e5e2e1]/60 text-sm hover:text-[#ffb955] transition-colors" href={businessInfo.instagramUrl} target="_blank" rel="noreferrer">Instagram</a></li>
+            <li><a className="text-[#e5e2e1]/60 text-sm hover:text-[#ffb955] transition-colors" href={`https://wa.me/62${businessInfo.whatsapp.slice(1)}`} target="_blank" rel="noreferrer">WhatsApp</a></li>
           </ul>
         </div>
         <div>
           <h4 className="text-[#f06620] font-bold text-xs uppercase tracking-widest mb-6">Lokasi</h4>
-          <p className="text-[#e5e2e1]/60 text-sm leading-relaxed mb-4">Pangkal Lalang, Kec. Tj. Pandan, Kab. Belitung</p>
-          <p className="text-[#e5e2e1]/60 text-sm">Open: 12:00 - 22:00</p>
+          <p className="text-[#e5e2e1]/60 text-sm leading-relaxed mb-4">{businessInfo.address}</p>
+          <p className="text-[#e5e2e1]/60 text-sm">Open: {businessInfo.hours}</p>
         </div>
       </div>
       <div className="max-w-7xl mx-auto px-8 mt-16 pt-8 border-t border-outline-variant/10 text-center">
