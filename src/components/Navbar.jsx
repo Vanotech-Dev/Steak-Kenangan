@@ -8,19 +8,18 @@ export default function Navbar() {
     <nav className="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl border-b border-outline-variant/10 shadow-2xl">
       <div className="flex justify-between items-center px-4 md:px-8 py-4 max-w-7xl mx-auto">
         <Link to="/" className="text-xl md:text-2xl font-black tracking-tighter text-primary font-headline" onClick={() => setIsOpen(false)}>
-          STEAK <span className="italic">KENANGAN</span>
+          STEAK <span className="px-2"> KENANGAN</span>
         </Link>
-        
+
         {/* Desktop Links */}
         <div className="hidden md:flex items-center gap-8">
           <NavLink
             to="/"
             end
             className={({ isActive }) =>
-              `font-poppins text-sm font-bold uppercase tracking-widest transition-colors ${
-                isActive
-                  ? 'text-primary'
-                  : 'text-on-surface-variant hover:text-primary'
+              `font-poppins text-sm font-bold uppercase tracking-widest transition-colors ${isActive
+                ? 'text-primary'
+                : 'text-on-surface-variant hover:text-primary'
               }`
             }
           >
@@ -29,10 +28,9 @@ export default function Navbar() {
           <NavLink
             to="/menu"
             className={({ isActive }) =>
-              `font-poppins text-sm font-bold uppercase tracking-widest transition-colors ${
-                isActive
-                  ? 'text-primary'
-                  : 'text-on-surface-variant hover:text-primary'
+              `font-poppins text-sm font-bold uppercase tracking-widest transition-colors ${isActive
+                ? 'text-primary'
+                : 'text-on-surface-variant hover:text-primary'
               }`
             }
           >
@@ -41,10 +39,9 @@ export default function Navbar() {
           <NavLink
             to="/kontak"
             className={({ isActive }) =>
-              `font-poppins text-sm font-bold uppercase tracking-widest transition-colors ${
-                isActive
-                  ? 'text-primary'
-                  : 'text-on-surface-variant hover:text-primary'
+              `font-poppins text-sm font-bold uppercase tracking-widest transition-colors ${isActive
+                ? 'text-primary'
+                : 'text-on-surface-variant hover:text-primary'
               }`
             }
           >
@@ -58,9 +55,9 @@ export default function Navbar() {
               Pesan Meja
             </button>
           </Link>
-          
+
           {/* Hamburger Menu Toggle */}
-          <button 
+          <button
             onClick={() => setIsOpen(!isOpen)}
             className="md:hidden text-on-surface p-2 cursor-pointer"
           >
