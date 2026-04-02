@@ -5,6 +5,7 @@ import MenuCard from '../components/ui/MenuCard';
 import TestimonialCard from '../components/ui/TestimonialCard';
 import FadeIn from '../components/ui/FadeIn';
 import { testimonialsData } from '../data/testimonialsData';
+import FloatingReservationBanner from '../components/ui/FloatingReservationBanner';
 
 export default function HomePage() {
   return (
@@ -164,6 +165,7 @@ export default function HomePage() {
           </div>
         </FadeIn>
       </section>
+      <FloatingReservationBanner />
     </main>
   );
 }

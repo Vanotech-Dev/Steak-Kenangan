@@ -55,6 +55,12 @@
   --font-poppins: "Poppins", sans-serif;
 }
 
+body {
+  cursor: default;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
 @layer base {
   .material-symbols-outlined {
     font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
@@ -66,18 +72,23 @@
     background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuCpIXSVOm8NxMcRCkhbjgKMGmaNzwN0MjYN0N4kBh533_6nzzQPe6Az-31jt2r7b-HbymMjcxCL-N1z8nJBqHhhYTe5IeCYxTQyYnBtL9vRXLoc0clso2XIw9a_0KeuV_TaZBbbKBUQOdWbJwRv_z-ii0lFU2pn7Tu3dHxWrm6rFCsQmHRY81Z2MnHmfSnlKu7JLRgnTVdn-Z4ETkvvv75twvCr5NocnTvJ5NDex4XzF2cn6-6myMlr17jwfOPtKGzG5EUSHi0acV0);
     opacity: 0.05;
   }
+
   .fire-gradient {
     background: linear-gradient(135deg, #f06620 0%, #ffb955 100%);
   }
+
   .no-line-rule {
     border: none !important;
   }
+
   .tonal-shift {
     background-color: rgba(28, 27, 27, 0.8);
   }
+
   .grain-overlay {
     position: relative;
   }
+
   .grain-overlay::before {
     content: "";
     position: absolute;
@@ -87,6 +98,7 @@
     pointer-events: none;
     z-index: 1;
   }
+
   .kinetic-flame-hover:hover {
     transform: scale(1.05);
     box-shadow: 0 0 20px rgba(240, 102, 32, 0.3);
