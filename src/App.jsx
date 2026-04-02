@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import ScrollToTop from './components/ScrollToTop';
 import HomePage from './pages/HomePage';
 import MenuPage from './pages/MenuPage';
 import ReservationPage from './pages/ReservationPage';
@@ -11,6 +12,7 @@ function App() {
   return (
     <BookingProvider>
       <Router>
+        <ScrollToTop />
         <div className="flex flex-col min-h-screen">
           <Navbar />
           <div className="flex-grow flex flex-col">

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { menuCategories, menuData } from '../data/menuData';
 import MenuCard from '../components/ui/MenuCard';
@@ -8,6 +8,10 @@ import { useBooking } from '../context/BookingContext';
 export default function MenuPage() {
   const [activeCategory, setActiveCategory] = useState('semua');
   const { totalItems, totalPrice, clearBooking } = useBooking();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [activeCategory]);
 
   return (
     <main className="pt-24 pb-20 grain-overlay">
